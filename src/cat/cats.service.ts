@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
 
+// 业务逻辑的具体实现，比如操作数据库等等
+
 // 服务中必须要使用Injectable装饰器，声明此服务可以被注入
 @Injectable()
 export class CatsService {
