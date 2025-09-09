@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 // import { AppController } from './app.controller';
 // import { AppService } from './app.service';
-import { CatsController } from './cat/cats.controller';
-import { CatsService } from './cat/cats.service';
+import { CatsModule } from './cat/cats.module';
 
 // @Module({
 //   imports: [],
@@ -11,8 +10,6 @@ import { CatsService } from './cat/cats.service';
 // })
 
 @Module({
-  imports: [],
-  controllers: [CatsController],
-  providers: [CatsService], // 注入XXX服务
+  imports: [CatsModule],
 })
 export class AppModule {}

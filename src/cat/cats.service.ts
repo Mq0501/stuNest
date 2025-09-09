@@ -7,7 +7,7 @@ import { Cat } from './interfaces/cat.interface';
 @Injectable()
 export class CatsService {
   // readonly:Ts修饰符，表示这个属性只能在声明时或者构造函数中赋值，之后不能被修改
-  private readonly cats: Cat[] = [];
+  private readonly cats: Cat[] = [{ name: 'marry', age: 5, breed: '1' }];
 
   create(cat: Cat) {
     this.cats.push(cat);
