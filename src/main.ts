@@ -3,15 +3,19 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { NextFunction } from 'express';
 import { join } from 'path';
+import { WINSTON_LOGGER_TOKEN } from './winston/winston.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: false,
+  });
   app.useStaticAssets('public', { prefix: '/static' });
   app.use(function (req: Request, res: Response, next: NextFunction) {
     console.log('before', req.url);
     next();
     console.log('after');
   });
+  app.useLogger(app.get(WINSTON_LOGGER_TOKEN));
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');

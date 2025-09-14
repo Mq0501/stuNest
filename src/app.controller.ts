@@ -1,42 +1,29 @@
 import {
   Controller,
   Get,
-  Inject,
-  OnApplicationBootstrap,
-  OnModuleInit,
-  BeforeApplicationShutdown,
   UseGuards,
   Render,
-  SetMetadata,
   Post,
   UseInterceptors,
   UploadedFiles,
   Body,
   Query,
+  Inject,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
-import { AaaGuard } from './aaa.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
+import { WINSTON_LOGGER_TOKEN } from './winston/winston.module';
 
 @Controller()
-export class AppController
-  implements OnModuleInit, OnApplicationBootstrap, BeforeApplicationShutdown
-{
-  constructor(
-    private readonly appService: AppService,
-    @Inject('person') private readonly person: { name: string; age: number },
-  ) {}
-  beforeApplicationShutdown(signal?: string) {
-    console.log('Method not implemented.');
-  }
-  onApplicationBootstrap() {
-    console.log('Method not implemented.');
-  }
-  onModuleInit() {
-    console.log('AppController has been initialized.');
-  }
+export class AppController {
+  //   private logger = new Logger();
+
+  @Inject(WINSTON_LOGGER_TOKEN)
+  private logger;
+
+  constructor(private readonly appService: AppService) {}
 
   @Post('upload')
   @UseInterceptors(
@@ -101,10 +88,9 @@ export class AppController
   }
 
   @Get()
-  @SetMetadata('aaa', 'admin')
-  @UseGuards(AaaGuard)
+  //   @SetMetadata('aaa', 'admin')
+  //   @UseGuards(AaaGuard)
   getHello(): string {
-    console.log(this.person);
     return this.appService.getHello();
   }
 
@@ -117,6 +103,11 @@ export class AppController
   @Get('user')
   @Render('user')
   user() {
+    // this.logger.debug('aaa', AppController.name);
+    this.logger.error('bbb', AppController.name);
+    this.logger.log('ccc', AppController.name);
+    // this.logger.verbose('ddd', AppController.name);
+    this.logger.warn('eee', AppController.name);
     return {
       name: '张三',
       age: 18,
